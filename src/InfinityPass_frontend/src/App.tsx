@@ -13,11 +13,7 @@ function App() {
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.3,
-            duration: 0.8,
-            ease: "easeInOut",
-          }}
+          transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
           className="relative flex flex-col gap-4 items-center justify-center px-4"
         >
           <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
@@ -32,42 +28,62 @@ function App() {
         </motion.div>
       </RippleBackground>
 
-      <section className="min-h-screen flex justify-center flex-col items-center dark-section bg-black text-white p-12">
-        <div className="text-8xl mb-12">Our Feature</div>
-      {/* Grid Container */}
-      <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-4 xl:max-h-[34rem]">
-        <GridItem
-          className="md:col-span-3 xl:col-span-4"
-          title="Take Control of Your Digital Identity"
-          description="No more relying on centralized platforms. Own your identity and access your world securely with Infinity Pass."
-        />
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="min-h-screen flex justify-center flex-col items-center dark-section bg-black text-white p-12"
+      >
+        {/* Grid Container */}
+        <div className="flex flex-row gap-12">
+          <div className="flex justify-center items-center flex-col">
+            <div className="text-8xl mb-12">Our Feature</div>
+            <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-4 xl:max-h-[34rem]">
+              <GridItem
+                className="md:col-span-3 xl:col-span-4"
+                title="Take Control of Your Digital Identity"
+                description="No more relying on centralized platforms. Own your identity and access your world securely with Infinity Pass."
+              />
 
-        <GridItem
-          className="md:col-span-3 xl:col-span-4"
-          title="Exclusive Access to the Future"
-          description="Get early access to groundbreaking tools, insider news, and premium content—all powered by the decentralized web."
-        />
+              <GridItem
+                className="md:col-span-3 xl:col-span-4"
+                title="Exclusive Access to the Future"
+                description="Get early access to groundbreaking tools, insider news, and premium content—all powered by the decentralized web."
+              />
 
-        <GridItem
-          className="md:col-span-3 xl:col-span-4"
-          title="Seamless and Secure Authentication"
-          description="Say goodbye to passwords. Infinity Pass lets you access services securely and effortlessly with next-gen authentication."
-        />
+              <GridItem
+                className="md:col-span-3 xl:col-span-4"
+                title="Seamless and Secure Authentication"
+                description="Say goodbye to passwords. Infinity Pass lets you access services securely and effortlessly with next-gen authentication."
+              />
 
-        <GridItem
-          className="md:col-span-3 xl:col-span-6"
-          title="A New Era of Digital Freedom"
-          description="Break free from traditional gatekeepers. Infinity Pass empowers you to explore the internet without restrictions."
-        />
+              <GridItem
+                className="md:col-span-3 xl:col-span-6"
+                title="A New Era of Digital Freedom"
+                description="Break free from traditional gatekeepers. Infinity Pass empowers you to explore the internet without restrictions."
+              />
 
-        <GridItem
-          className="md:col-span-6 xl:col-span-6"
-          title="Seamless Access, No Limits"
-          description="Instantly connect to the decentralized web without restrictions. Your access, your rules."
-        />
-      </div>
-      </section>
-      <section className="h-screen bg-white text-black">Light Section</section>
+              <GridItem
+                className="md:col-span-6 xl:col-span-6"
+                title="Seamless Access, No Limits"
+                description="Instantly connect to the decentralized web without restrictions. Your access, your rules."
+              />
+            </div>
+          </div>
+          <div className="flex justify-center items-center">
+            <img src="/decentralized.png" className="max-w-7xl h-auto" alt="" />
+          </div>
+        </div>
+      </motion.section>
+      
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="h-screen bg-white text-black"
+      >
+        
+      </motion.section>
 
       <Footer />
     </>
@@ -82,7 +98,12 @@ interface GridItemProps {
 
 const GridItem = ({ className, title, description }: GridItemProps) => {
   return (
-    <div className={`min-h-[14rem] ${className}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`min-h-[14rem] ${className}`}
+    >
       <div className="relative h-full rounded-2.5xl border p-2 md:rounded-3xl md:p-3">
         <GlowingEffect
           spread={40}
@@ -104,7 +125,7 @@ const GridItem = ({ className, title, description }: GridItemProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
