@@ -6,6 +6,17 @@ body {
   background-color: black;
 }
 
+@keyframes rippleEffect {
+  0%, 100% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(2);
+    opacity: 1;
+  }
+}
+
 img {
   max-width: 50vw;
   max-height: 25vw;

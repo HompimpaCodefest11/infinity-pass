@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { GlowingEffect } from "./components/ui/glowing-effect";
-import { AuroraBackground } from "./components/ui/aurora-background";
+import { RippleBackground } from "./components/ui/ripple-background";
 import { motion } from "framer-motion";
+import Navbar from "./components/ui/navbar";
 
 function App() {
   return (
     <>
-      <AuroraBackground>
+      <Navbar />
+      <RippleBackground>
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -27,7 +29,7 @@ function App() {
             Join now.
           </button>
         </motion.div>
-      </AuroraBackground>
+      </RippleBackground>
 
       {/* Grid Container */}
       <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-4 xl:max-h-[34rem] p-4">
