@@ -2,7 +2,8 @@ import { useState } from "react";
 import { GlowingEffect } from "./components/ui/glowing-effect";
 import { RippleBackground } from "./components/ui/ripple-background";
 import { motion } from "framer-motion";
-import Navbar from "./components/ui/navbar";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 
 function App() {
   return (
@@ -25,14 +26,16 @@ function App() {
           <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
             Get exclusive access to news, tools, and more—all in the decentralized web.
           </div>
-          <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">
+          <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-6 py-2">
             Join now.
           </button>
         </motion.div>
       </RippleBackground>
 
+      <section className="min-h-screen flex justify-center flex-col items-center dark-section bg-black text-white p-12">
+        <div className="text-8xl mb-12">Our Feature</div>
       {/* Grid Container */}
-      <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-4 xl:max-h-[34rem] p-4">
+      <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-4 xl:max-h-[34rem]">
         <GridItem
           className="md:col-span-3 xl:col-span-4"
           title="Take Control of Your Digital Identity"
@@ -52,17 +55,21 @@ function App() {
         />
 
         <GridItem
-          className="md:col-span-3 xl:col-span-5"
+          className="md:col-span-3 xl:col-span-6"
           title="A New Era of Digital Freedom"
           description="Break free from traditional gatekeepers. Infinity Pass empowers you to explore the internet without restrictions."
         />
 
         <GridItem
-          className="md:col-span-6 xl:col-span-7"
+          className="md:col-span-6 xl:col-span-6"
           title="Seamless Access, No Limits"
           description="Instantly connect to the decentralized web without restrictions. Your access, your rules."
         />
       </div>
+      </section>
+      <section className="h-screen bg-white text-black">Light Section</section>
+
+      <Footer />
     </>
   );
 }
@@ -86,7 +93,6 @@ const GridItem = ({ className, title, description }: GridItemProps) => {
         />
         <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-0.75 p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D] md:p-6">
           <div className="relative flex flex-1 flex-col justify-between gap-3">
-            <div className="w-fit rounded-lg border border-gray-600 p-2"></div>
             <div className="space-y-3">
               <h3 className="pt-0.5 text-xl/[1.375rem] font-semibold font-sans -tracking-4 md:text-2xl/[1.875rem] text-balance text-white dark:text-white">
                 {title}
