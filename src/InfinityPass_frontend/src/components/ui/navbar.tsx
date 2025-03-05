@@ -29,7 +29,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-[90%] max-w-sm bg-black/80 dark:bg-white/10 backdrop-blur-md border border-black/50 rounded-2xl shadow-lg"
+            className="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-[90%] max-w-sm bg-white/100 dark:bg-white/10 backdrop-blur-md border border-black/50 rounded-2xl shadow-lg"
           >
             <div className="flex flex-col items-center gap-4 py-4">
               <NavItem href="#features" onClick={() => setIsOpen(false)}>Features</NavItem>
@@ -44,13 +44,18 @@ const Navbar = () => {
 };
 
 const NavItem = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick?: () => void }) => (
-  <a
-    href={href}
-    onClick={onClick}
-    className="text-black text-lg font-light hover:text-gray-300 transition"
-  >
-    {children}
-  </a>
+    <div className="relative group">
+        <a
+        href={href}
+        onClick={onClick}
+        className="text-black text-lg font-light hover:text-gray-600 transition duration-300"
+        >
+        {children}
+        </a>
+        {/* Underline Effect */}
+        <span className="absolute left-0 bottom-0 w-full h-[1px] bg-black scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
+    </div>
 );
+  
 
 export default Navbar;
