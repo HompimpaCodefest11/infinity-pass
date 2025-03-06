@@ -1,138 +1,101 @@
-import { GlowingEffect } from "../components/ui/glowing-effect";
-import { RippleBackground } from "../components/ui/ripple-background";
-import { motion } from "framer-motion";
-import '../styles/mouse.css';
+"use client"
+
+import { motion } from "framer-motion"
+import { GlowingEffect } from "../components/ui/glowing-effect"
+import { RippleBackground } from "../components/ui/ripple-background"
+import "../styles/mouse.css"
 
 function Home() {
-    return (
-        <div className="relative min-h-screen flex flex-col">
-        <RippleBackground>
-          <motion.div
-            initial={{ opacity: 0.0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
-            className="relative flex flex-col gap-4 items-center justify-center px-4 min-h-screen"
-          >
-            <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-              Infinity Pass.
-            </div>
-            <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-              Get exclusive access to news, tools, and more—all in the decentralized web.
-            </div>
-            <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-6 py-2">
-              Join now.
-            </button>
+  return (
+    <div className="relative min-h-screen flex flex-col">
+      {/* Hero Section */}
+      <RippleBackground>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="text-center px-4 max-w-3xl mx-auto"
+        >
+          <h1 className="text-4xl md:text-7xl font-bold dark:text-white mb-6">Infinity Pass.</h1>
+          <p className="text-lg md:text-2xl dark:text-neutral-200 mb-8">
+            Get exclusive access to news, tools, and more—all in the decentralized web.
+          </p>
+          <button className="bg-black dark:bg-white rounded-full text-white dark:text-black px-8 py-3 font-medium">
+            Join now.
+          </button>
+        </motion.div>
 
-            {/* Mouse Indicator */}
-            <div className="absolute bottom-20 left-1/2 transform flex flex-col items-center -translate-x-1/2">
-              <div className="mouse">
-              </div>
-              {/* <div className="text-md mt-2 text-gray-400">
-                Scroll
-              </div> */}
-            </div>
-          </motion.div>
-
+        <div className="absolute top-110 left-1/2 transform -translate-x-1/2">
+          <div className="mouse"></div>
+        </div>
       </RippleBackground>
 
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="min-h-screen flex justify-center flex-col items-center dark-section bg-black text-white p-12"
-      >
-        {/* Grid Container */}
-        <div className="flex flex-col lg:flex-row gap-12">
-          <div className="flex justify-center items-center flex-col">
-            <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-12">
-              Unlock the Future: Key Features of Infinity Pass
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-6 xl:grid-cols-12 gap-4 xl:max-h-[34rem]">
-              <GridItem
-                className="md:col-span-3 xl:col-span-4"
+      {/* Features Section */}
+      <section className="dark-section bg-black text-white py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-5xl font-bold mb-12 text-center max-w-4xl mx-auto">
+            Unlock the Future: Key Features of Infinity Pass
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            <div className="flex flex-col gap-6">
+              <FeatureCard
                 title="Take Control of Your Digital Identity"
                 description="No more relying on centralized platforms. Own your identity and access your world securely with Infinity Pass."
               />
-
-              <GridItem
-                className="md:col-span-3 xl:col-span-4"
+              <FeatureCard
                 title="Exclusive Access to the Future"
                 description="Get early access to groundbreaking tools, insider news, and premium content—all powered by the decentralized web."
               />
-
-              <GridItem
-                className="md:col-span-3 xl:col-span-4"
+              <FeatureCard
                 title="Seamless and Secure Authentication"
                 description="Say goodbye to passwords. Infinity Pass lets you access services securely and effortlessly with next-gen authentication."
               />
+            </div>
 
-              <GridItem
-                className="md:col-span-3 xl:col-span-6"
+            <div className="flex flex-col gap-6">
+              <FeatureCard
                 title="A New Era of Digital Freedom"
                 description="Break free from traditional gatekeepers. Infinity Pass empowers you to explore the internet without restrictions."
               />
-
-              <GridItem
-                className="md:col-span-6 xl:col-span-6"
+              <FeatureCard
                 title="Seamless Access, No Limits"
                 description="Instantly connect to the decentralized web without restrictions. Your access, your rules."
               />
+              <div className="flex items-center justify-center p-4">
+                <img src="/decentralized.png" className="max-w-full h-auto rounded-lg" alt="Decentralized web" />
+              </div>
             </div>
           </div>
-          <div className="flex justify-center items-center">
-            <img src="/decentralized.png" className="max-w-7xl h-auto" alt="" />
-          </div>
         </div>
-      </motion.section>
-      
-      {/* <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="h-screen bg-white text-black"
-      >
-      </motion.section> */}
+      </section>
     </div>
-);
+  )
 }
 
-export default Home;
-  
-interface GridItemProps {
-    className: string;
-    title: string;
-    description: React.ReactNode;
-  }
-  
-const GridItem = ({ className, title, description }: GridItemProps) => {
-return (
+interface FeatureCardProps {
+  title: string
+  description: string
+}
+
+const FeatureCard = ({ title, description }: FeatureCardProps) => {
+  return (
     <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
-    className={`min-h-[14rem] ${className}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="relative h-full rounded-xl border p-2"
     >
-    <div className="relative h-full rounded-2.5xl border p-2 md:rounded-3xl md:p-3">
-        <GlowingEffect
-        spread={40}
-        glow={true}
-        disabled={false}
-        proximity={64}
-        inactiveZone={0.01}
-        />
-        <div className="relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border-0.75 p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D] md:p-6">
-        <div className="relative flex flex-1 flex-col justify-between gap-3">
-            <div className="space-y-3">
-            <h3 className="pt-0.5 text-xl/[1.375rem] font-semibold font-sans -tracking-4 md:text-2xl/[1.875rem] text-balance text-white dark:text-white">
-                {title}
-            </h3>
-            <h2 className="[&_b]:md:font-semibold [&_strong]:md:font-semibold font-sans text-sm/[1.125rem] md:text-base/[1.375rem] text-white dark:text-neutral-400">
-                {description}
-            </h2>
-            </div>
+      <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} />
+      <div className="relative h-full flex flex-col justify-between gap-4 overflow-hidden rounded-lg border-0.75 p-6 dark:shadow-[0px_0px_27px_0px_#2D2D2D]">
+        <div className="space-y-3">
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
+          <p className="text-sm text-neutral-400">{description}</p>
         </div>
-        </div>
-    </div>
+      </div>
     </motion.div>
-);
-};
+  )
+}
+
+export default Home
+
