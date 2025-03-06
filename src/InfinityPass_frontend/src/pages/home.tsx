@@ -1,27 +1,38 @@
 import { GlowingEffect } from "../components/ui/glowing-effect";
 import { RippleBackground } from "../components/ui/ripple-background";
 import { motion } from "framer-motion";
+import '../styles/mouse.css';
 
 function Home() {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="relative min-h-screen flex flex-col">
         <RippleBackground>
-            <motion.div
+          <motion.div
             initial={{ opacity: 0.0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
-            className="relative flex flex-col gap-4 items-center justify-center px-4"
-            >
+            className="relative flex flex-col gap-4 items-center justify-center px-4 min-h-screen"
+          >
             <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-                Infinity Pass.
+              Infinity Pass.
             </div>
             <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-                Get exclusive access to news, tools, and more—all in the decentralized web.
+              Get exclusive access to news, tools, and more—all in the decentralized web.
             </div>
             <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-6 py-2">
-                Join now.
+              Join now.
             </button>
-            </motion.div>
+
+            {/* Mouse Indicator */}
+            <div className="absolute bottom-20 left-1/2 transform flex flex-col items-center -translate-x-1/2">
+              <div className="mouse">
+              </div>
+              {/* <div className="text-md mt-2 text-gray-400">
+                Scroll
+              </div> */}
+            </div>
+          </motion.div>
+
       </RippleBackground>
 
       <motion.section
