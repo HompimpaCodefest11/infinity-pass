@@ -56,8 +56,8 @@ const Navbar = () => {
       </a>
 
       <div className="hidden md:flex gap-8">
-        <NavItem href="#features">Features</NavItem>
-        <NavItem href="#about">About</NavItem>
+        <NavItem href="/">Home</NavItem>
+        <NavItem href="/news">News</NavItem>
         <NavItem href="#contact">Contact</NavItem>
       </div>
 

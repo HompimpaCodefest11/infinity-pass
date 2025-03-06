@@ -26,7 +26,7 @@ const GlowingEffect = memo(
     glow = false,
     className,
     movementDuration = 2,
-    borderWidth = 1,
+    borderWidth = 5,
     disabled = true,
   }: GlowingEffectProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -120,14 +120,6 @@ const GlowingEffect = memo(
     return (
       <>
         <div
-          className={cn(
-            "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
-            glow && "opacity-100",
-            variant === "white" && "border-white",
-            disabled && "!block"
-          )}
-        />
-        <div
           ref={containerRef}
           style={
             {
@@ -171,7 +163,7 @@ const GlowingEffect = memo(
               "glow",
               "rounded-[inherit]",
               'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
-              "after:[border:var(--glowingeffect-border-width)_solid_transparent]",
+              "after:[border:var(--glowingeffect-border-width)_solid_white]",
               "after:[background:var(--gradient)] after:[background-attachment:fixed]",
               "after:opacity-[var(--active)] after:transition-opacity after:duration-300",
               "after:[mask-clip:padding-box,border-box]",
