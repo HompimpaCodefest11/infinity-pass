@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { BentoGrid, BentoGridItem } from "../components/ui/bento-grid"
 import { Tabs } from "../components/ui/tabs"
-import { Search, TrendingUp, Clock, Star } from "lucide-react"
+import { Search } from "lucide-react"
 
 function News() {
   const categories = [
@@ -18,12 +18,12 @@ function News() {
   const [searchQuery, setSearchQuery] = useState("")
   const [activeSection, setActiveSection] = useState("all")
 
-  // Filter items based on both category and search query
+  const [visibleItems, setVisibleItems] = useState(6)
+  const itemsPerPage = 3
+
   const filteredItems = items.filter((item) => {
-    // First filter by category
     const matchesCategory = selectedCategory === "All" || item.category === selectedCategory
 
-    // Then filter by search query if there is one
     const matchesSearch =
       searchQuery === "" ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -32,90 +32,78 @@ function News() {
     return matchesCategory && matchesSearch
   })
 
-  // Get top news (items marked as featured)
-  const topNews = items.filter((item) => item.featured)
+  const featuredNews = items.filter((item) => item.featured)
 
-  // Get most read news (items with highest readCount)
-  const mostRead = [...items].sort((a, b) => (b.readCount || 0) - (a.readCount || 0)).slice(0, 3)
+  const mostRead = [...items].sort((a, b) => (b.readCount || 0) - (a.readCount || 0))
 
-  // Get latest news (most recent items)
-  const latestNews = [...items]
-    .sort((a, b) => new Date(b.date || "").getTime() - new Date(a.date || "").getTime())
-    .slice(0, 4)
+  const latestNews = [...items].sort((a, b) => new Date(b.date || "").getTime() - new Date(a.date || "").getTime())
+
+  const loadMore = () => {
+    setVisibleItems((prev) => prev + itemsPerPage)
+  }
+
+  const getCurrentItems = () => {
+    switch (activeSection) {
+      case "trending":
+        return mostRead.slice(0, visibleItems)
+      case "latest":
+        return latestNews.slice(0, visibleItems)
+      default:
+        return filteredItems.slice(0, visibleItems)
+    }
+  }
+
+  const hasMoreItems = () => {
+    switch (activeSection) {
+      case "trending":
+        return visibleItems < mostRead.length
+      case "latest":
+        return visibleItems < latestNews.length
+      default:
+        return visibleItems < filteredItems.length
+    }
+  }
+
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section)
+    setVisibleItems(6)
+  }
+
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value)
+    setVisibleItems(6)
+  }
 
   return (
-    <div className="min-h-screen bg-white py-16 text-black flex flex-col">
-      {/* Featured News Banner */}
-      <div className="w-full bg-gray-50 py-10 mb-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6 flex items-center">
-            <Star className="h-5 w-5 mr-2 text-yellow-500" />
-            Featured Story
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="rounded-xl overflow-hidden h-64 md:h-80">
-              <Skeleton
-                image={
-                  topNews[0]?.header?.props?.image || "https://thenewscrypto.com/wp-content/uploads/2025/01/link.jpg"
-                }
-              />
-            </div>
-            <div className="space-y-4">
-              <div className="text-sm font-medium text-indigo-600">{topNews[0]?.category || "Crypto"}</div>
-              <h3 className="text-2xl md:text-3xl font-bold">
-                {topNews[0]?.title || "Chainlink Eyes Breakout: Can the Demand Zone Propel LINK Beyond $20?"}
-              </h3>
-              <p className="text-gray-600">
-                {topNews[0]?.description ||
-                  "Chainlink has bounced from a 24-hour low of $13.07 to trade near $15.21, recovering from a lower price rejection."}
-              </p>
-              <a
-                href={topNews[0]?.to || "#"}
-                className="inline-block text-indigo-600 font-medium hover:text-indigo-800 transition-colors"
-              >
-                Read full story →
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
+    <div className="min-h-screen bg-white py-16 text-black flex flex-col pt-28">
       <div className="max-w-6xl mx-auto w-full px-4">
-        {/* Section Tabs */}
-        <div className="flex flex-wrap gap-4 mb-8 border-b pb-2">
-          <button
-            onClick={() => setActiveSection("all")}
-            className={`flex items-center px-3 py-1.5 text-sm rounded-md transition-colors ${
-              activeSection === "all" ? "bg-gray-100 text-black font-medium" : "text-gray-500 hover:text-black"
-            }`}
-          >
-            All News
-          </button>
-          <button
-            onClick={() => setActiveSection("trending")}
-            className={`flex items-center px-3 py-1.5 text-sm rounded-md transition-colors ${
-              activeSection === "trending" ? "bg-gray-100 text-black font-medium" : "text-gray-500 hover:text-black"
-            }`}
-          >
-            <TrendingUp className="h-3.5 w-3.5 mr-1.5" />
-            Most Read
-          </button>
-          <button
-            onClick={() => setActiveSection("latest")}
-            className={`flex items-center px-3 py-1.5 text-sm rounded-md transition-colors ${
-              activeSection === "latest" ? "bg-gray-100 text-black font-medium" : "text-gray-500 hover:text-black"
-            }`}
-          >
-            <Clock className="h-3.5 w-3.5 mr-1.5" />
-            Latest
-          </button>
-        </div>
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex gap-4">
+            <button
+              onClick={() => handleSectionChange("all")}
+              className={`px-3 py-1.5 text-sm ${activeSection === "all" ? "text-black font-medium" : "text-gray-500"}`}
+            >
+              All News
+            </button>
+            <button
+              onClick={() => handleSectionChange("trending")}
+              className={`px-3 py-1.5 text-sm ${
+                activeSection === "trending" ? "text-black font-medium" : "text-gray-500"
+              }`}
+            >
+              Most Read
+            </button>
+            <button
+              onClick={() => handleSectionChange("latest")}
+              className={`px-3 py-1.5 text-sm ${
+                activeSection === "latest" ? "text-black font-medium" : "text-gray-500"
+              }`}
+            >
+              Latest
+            </button>
+          </div>
 
-        {/* Header with tabs and search */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            {/* Tabs on the left */}
+          <div className="flex items-center gap-4">
             <Tabs
               tabs={categories.map((category) => ({
                 title: category.title,
@@ -124,11 +112,10 @@ function News() {
               containerClassName="flex"
               activeTabClassName="bg-black"
               tabClassName="text-gray-500 hover:text-gray-800"
-              onChange={(value) => setSelectedCategory(value)}
+              onChange={(value) => handleCategoryChange(value)}
             />
 
-            {/* Search on the right */}
-            <div className="relative w-full sm:w-56">
+            <div className="relative w-56">
               <div className="absolute inset-y-0 left-0 flex items-center pl-1 pointer-events-none">
                 <Search className="h-3.5 w-3.5 text-gray-400" />
               </div>
@@ -137,30 +124,64 @@ function News() {
                 className="block w-full pl-6 py-1.5 text-sm bg-transparent focus:outline-none"
                 placeholder="Search news..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  setVisibleItems(6)
+                }}
               />
             </div>
           </div>
         </div>
 
-        {/* Content based on active section */}
+        {activeSection === "all" && featuredNews.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-lg font-medium mb-4">Featured</h2>
+            <BentoGrid className="grid-cols-1 md:grid-cols-2">
+              {featuredNews.slice(0, 2).map((item, i) => (
+                <BentoGridItem
+                  key={i}
+                  title={item.title}
+                  description={item.description}
+                  header={item.header}
+                  className="md:col-span-1"
+                  to={item.to}
+                />
+              ))}
+            </BentoGrid>
+          </div>
+        )}
+
         {activeSection === "all" && (
           <>
+            <h2 className="text-lg font-medium mb-4">All News</h2>
             {filteredItems.length > 0 ? (
-              <BentoGrid className="max-w-6xl mx-auto">
-                {filteredItems.map((item, i) => (
-                  <BentoGridItem
-                    key={i}
-                    title={item.title}
-                    description={item.description}
-                    header={item.header}
-                    className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-                    to={item.to}
-                  />
-                ))}
-              </BentoGrid>
+              <>
+                <BentoGrid>
+                  {getCurrentItems().map((item, i) => (
+                    <BentoGridItem
+                      key={i}
+                      title={item.title}
+                      description={item.description}
+                      header={item.header}
+                      className={i === 3 || i === 6 ? "md:col-span-2" : ""}
+                      to={item.to}
+                    />
+                  ))}
+                </BentoGrid>
+
+                {hasMoreItems() && (
+                  <div className="flex justify-center mt-8">
+                    <button
+                      onClick={loadMore}
+                      className="px-6 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50 transition-colors"
+                    >
+                      Load More
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="max-w-4xl mx-auto text-center py-12">
+              <div className="text-center py-12">
                 <h3 className="text-xl font-medium">No results found</h3>
                 <p className="text-gray-500 mt-2">
                   Try adjusting your search or category to find what you're looking for.
@@ -171,54 +192,63 @@ function News() {
         )}
 
         {activeSection === "trending" && (
-          <div className="space-y-8">
-            <h2 className="text-2xl font-bold mb-6">Most Read Articles</h2>
-            {mostRead.map((item, i) => (
-              <div key={i} className="flex flex-col md:flex-row gap-6 border-b pb-8">
-                <div className="md:w-1/3 rounded-xl overflow-hidden h-48">{item.header}</div>
-                <div className="md:w-2/3 space-y-3">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <span className="bg-gray-100 px-2 py-0.5 rounded">{item.category}</span>
-                    <span className="mx-2">•</span>
-                    <span>{item.date || "March 7, 2025"}</span>
-                    <span className="mx-2">•</span>
-                    <span>{item.readCount || Math.floor(Math.random() * 1000) + 500} reads</span>
-                  </div>
-                  <h3 className="text-xl font-bold">
-                    <a href={item.to} className="hover:text-indigo-600 transition-colors">
-                      {item.title}
-                    </a>
-                  </h3>
-                  <p className="text-gray-600">{item.description}</p>
-                </div>
+          <>
+            <h2 className="text-lg font-medium mb-4">Most Read</h2>
+            <BentoGrid>
+              {getCurrentItems().map((item, i) => (
+                <BentoGridItem
+                  key={i}
+                  title={item.title}
+                  description={item.description}
+                  header={item.header}
+                  className={i === 0 ? "md:col-span-2" : ""}
+                  to={item.to}
+                  meta={`${item.readCount || Math.floor(Math.random() * 1000) + 500} reads`}
+                />
+              ))}
+            </BentoGrid>
+
+            {hasMoreItems() && (
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={loadMore}
+                  className="px-6 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50 transition-colors"
+                >
+                  Load More
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
 
         {activeSection === "latest" && (
-          <div className="space-y-8">
-            <h2 className="text-2xl font-bold mb-6">Latest Updates</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {latestNews.map((item, i) => (
-                <div key={i} className="border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="h-48 overflow-hidden">{item.header}</div>
-                  <div className="p-4 space-y-2">
-                    <div className="flex justify-between items-center text-sm text-gray-500">
-                      <span className="bg-gray-100 px-2 py-0.5 rounded">{item.category}</span>
-                      <span>{item.date || "March 7, 2025"}</span>
-                    </div>
-                    <h3 className="text-lg font-bold">
-                      <a href={item.to} className="hover:text-indigo-600 transition-colors">
-                        {item.title}
-                      </a>
-                    </h3>
-                    <p className="text-gray-600 text-sm line-clamp-2">{item.description}</p>
-                  </div>
-                </div>
+          <>
+            <h2 className="text-lg font-medium mb-4">Latest Updates</h2>
+            <BentoGrid>
+              {getCurrentItems().map((item, i) => (
+                <BentoGridItem
+                  key={i}
+                  title={item.title}
+                  description={item.description}
+                  header={item.header}
+                  className={i === 0 ? "md:col-span-2" : ""}
+                  to={item.to}
+                  meta={item.date || "March 7, 2025"}
+                />
               ))}
-            </div>
-          </div>
+            </BentoGrid>
+
+            {hasMoreItems() && (
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={loadMore}
+                  className="px-6 py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50 transition-colors"
+                >
+                  Load More
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -234,7 +264,6 @@ const Skeleton = ({ image }: { image?: string }) => (
   />
 )
 
-// Enhanced news items with additional properties
 const items = [
   {
     title: "Chainlink Eyes Breakout: Can the Demand Zone Propel LINK Beyond $20?",
@@ -275,7 +304,7 @@ const items = [
       "Marc Zeller, the founder of Aave Chan Initiative (ACI), introduced a proposal on March 4 to overhaul Aave's tokenomics.",
     category: "Crypto",
     header: (
-      <Skeleton image="https://app.chaingpt.org/_next/image?url=https%3A%2F%2Fd2qsg582zx9qac.cloudfront.net%2Fdocument%2F7ad4d56a-dd0e-35e3-aa61-a41867a816ea.jpg&w=640&q=75" />
+      <Skeleton image="https://blockworks.co/_next/image?url=https%3A%2F%2Fblockworks-co.imgix.net%2Fwp-content%2Fuploads%2F2024%2F12%2Faave-ghost.jpg&w=768&q=40" />
     ),
     to: "https://crypto.ro/en/wp-content/uploads/2025/03/photo_5924592233472968965_w-1024x682.jpg",
     featured: true,
