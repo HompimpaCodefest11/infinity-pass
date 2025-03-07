@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useAnimationControls } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 import { GlowingEffect } from "../components/ui/glowing-effect"
 import { RippleBackground } from "../components/ui/ripple-background"
 import "../styles/mouse.css"
@@ -69,6 +70,73 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Our Client Section */}
+      <section className="py-24 dark-section bg-black text-white ">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center">Trusted by Leading Companies</h2>
+          <p className="text-2xl md:text-xl mb-10 text-center">We collaborate with top industry leaders, ensuring innovation, reliability, 
+          and excellence in every solution we deliver.</p>
+          <InfiniteLogoSlider />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+const partnerLogos = [
+  { name: "Ethereum", logo: "ethereum-eth-logo.png" },
+  { name: "Polygon", logo: "polygon-matic-logo.png" },
+  { name: "Solana", logo: "solana-sol-logo.png" },
+  { name: "Binance", logo: "Binance_Logo.png" },
+  { name: "ICP", logo: "icp.png" },
+  { name: "Avalanche", logo: "avalanche-avax-logo.png" },
+  { name: "Uniswap", logo: "uniswap-uni-logo.png" },
+  { name: "Messari", logo: "Messari-Logo.png" },
+]
+
+const InfiniteLogoSlider = () => {
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const controls = useAnimationControls()
+
+  const [width, setWidth] = useState(0)
+  const carouselRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      setWidth(carouselRef.current.scrollWidth / 3)
+    }
+  }, [])
+
+  return (
+    <div className="overflow-hidden">
+      <motion.div
+        className="flex"
+        initial={{ x: 0 }}
+        animate={{
+          x: -width,
+        }}
+        transition={{
+          x: {
+            duration: 25,
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "loop",
+            ease: "linear",
+          },
+        }}
+      >
+        <motion.div ref={carouselRef} className="flex gap-8 px-4">
+          {[...partnerLogos, ...partnerLogos, ...partnerLogos].map((partner, index) => (
+            <div key={index} className="flex-shrink-0 flex items-center justify-center w-[150px] h-20">
+              <img
+                src={partner.logo || "/placeholder.svg"}
+                alt={partner.name}
+                className="h-12 md:h-16 w-auto opacity-80 hover:opacity-100 transition-opacity"
+              />
+            </div>
+          ))}
+        </motion.div>
+      </motion.div>
     </div>
   )
 }
