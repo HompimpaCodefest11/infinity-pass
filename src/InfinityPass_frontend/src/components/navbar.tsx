@@ -76,9 +76,9 @@ const Navbar = () => {
             className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-[90%] max-w-sm backdrop-blur-md rounded-2xl shadow-lg ${navbarStyle.mobileBg}`}
           >
             <div className="flex flex-col items-center gap-4 py-4">
-              <NavItem href="#features" onClick={() => setIsOpen(false)}>Features</NavItem>
-              <NavItem href="#about" onClick={() => setIsOpen(false)}>About</NavItem>
-              <NavItem href="#contact" onClick={() => setIsOpen(false)}>Contact</NavItem>
+              <NavItem href="/" onClick={() => setIsOpen(false)}>Home</NavItem>
+              <NavItem href="/news" onClick={() => setIsOpen(false)}>News</NavItem>
+              <NavItem href="/subscribe" onClick={() => setIsOpen(false)}>Subscribe</NavItem>
             </div>
           </motion.div>
         )}

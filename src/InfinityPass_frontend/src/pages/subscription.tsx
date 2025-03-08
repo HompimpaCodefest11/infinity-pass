@@ -95,7 +95,7 @@ export default function Subscription() {
                 <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                 <div className="mb-4">
                   <span className="text-3xl font-bold">{plan.price}</span>
-                  <span className="text-gray-500 ml-1">{plan.period}</span>
+                  <span className="text-gray-500 ml-1 text-lg">{plan.period}</span>
                 </div>
                 <p className="text-gray-600 mb-6">{plan.description}</p>
 
@@ -109,7 +109,7 @@ export default function Subscription() {
                 </ul>
 
                 <button
-                  className={`w-full py-3 rounded-lg font-medium transition-colors ${
+                  className={`w-full py-3 rounded-lg font-medium transition-colors cursor-pointer ${
                     plan.popular
                       ? "bg-black text-white hover:bg-gray-800"
                       : "bg-white text-black border border-black hover:bg-gray-50"
